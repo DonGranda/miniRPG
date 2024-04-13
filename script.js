@@ -4,7 +4,7 @@ let gold= 50;
 let currentWeapon=0;
 let fighting;
 let monsterHealth;
-let inventory= ["stick", "dagger", "swor"];
+let inventory= ["stick"];
 const button1= document.querySelector("#button1");
 const button2= document.querySelector("#button2");
 const button3= document.querySelector("#button3");
@@ -131,8 +131,34 @@ function buyHealth() {
 
 function buyWeapon(){
 
+    if (currentWeapon < weapons.length-1) {
+        if (gold>=30) {
+
+            gold-=30;
+            gold-= 30;
+            currentWeapon++; 
+            goldText.innerText = gold;
+            let newWeapon= weapons[currentWeapon].name;
+            text.innerText = "You have a "+ newWappon + ".";
+            inventory.push(newWeapon);
+    
+            text.innerText+=" In you inventory, you have: "+ inventory;
+            
+        } else {
+            text.innerText = "You dont have enough gold to buy a weapon"
+        }
+        
+    } else{
+        text.innerText= "You already have the most powerful weapon";
+        button2.innerText= "Sell weapon for 15 gold";
+        button2.onclick=sellWeapon;
+    }
+
 }
 
+function sellWeapon(){
+
+}
 
 
 
