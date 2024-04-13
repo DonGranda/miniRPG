@@ -16,6 +16,35 @@ const monsterStats=document.querySelector("#monsterStats");
 const monsterNameText=document.querySelector("#monsterName");
 const monsterHealthText=document.querySelector("#monsterHealth");
 
+const weapons= [{
+
+    name: "stick",
+    power: 5
+    },
+    {
+
+    name: "dagger",
+    power: 30
+
+    },
+    {
+
+    name: "claw hammer",
+    power: 50
+
+    },
+    {
+
+    name: "sword",
+    power: 100
+    
+    }
+
+
+
+
+];
+
 const locations=[
     {
         name:  "town sqaure ",
@@ -29,6 +58,15 @@ const locations=[
         "button text": ["Buy 10 health (10 Gold)", "Buy weapon (30 Gold)","Go to town sqaure"],
         "button function":[buyHealth,buyWeapon,goTown],
         text:"You are in a store"
+    },
+
+    {
+        name: "cave",
+        "button text": ["Fight Slime", "Fight Fanged Beast", "Go To Town Square"],
+        "button function":[fightSlime, fightBeast, goTown],
+        text: "You enter the cave. You see some monsters"
+    
+
     }
     
 
@@ -65,9 +103,28 @@ function goStore( ) {
 }
 
 
+function goCave( ) {
+
+    update(locations[2])
+    
+}
+
 
 
 function buyHealth() {
+   if (gold >=10) {
+
+    gold -=10;
+    health +=10;
+    goldText.innerText= gold;
+    healthText.innerText= health;   
+   } else{
+    text.innerText="Sorry. You do not have enogh gold coins ";
+
+   }
+   
+    
+    
     
 
 }
@@ -78,14 +135,18 @@ function buyWeapon(){
 
 
 
-function goCave( ) {
-
-    console.log("Going to Store");
-    
-}
 
 function fightDragon( ) {
 
     console.log("Going to Store");
     
+}
+
+function fightSlime() {
+
+}
+
+
+function fightBeast(){
+
 }
