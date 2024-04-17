@@ -21,6 +21,7 @@ const weapons= [{
     name: "stick",
     power: 5
     },
+
     {
 
     name: "dagger",
@@ -88,8 +89,14 @@ const locations=[
         name: "lose",
         "button text": ["REPLAY", "REPLAY", "REPLAY"],
         "button function":[restart, restart, restart],
-        text: "You Died"
+        text: "☠️You Died☠️"
         
+    },
+    {
+        name: "win",
+        "button text": ["REPLAY", "REPLAY", "REPLAY"],
+        "button function":[restart, restart, restart],
+        text: "You defeated the Dragon! YOU WIN THE GAME!!🥳🎉"
     }
 
 
@@ -156,9 +163,8 @@ function goCave( ) {
 
 function buyHealth() {
    if (gold >=10) {
-
-    gold -=10;
-    health +=10;
+       gold -=10;
+       health +=10;
     goldText.innerText= gold;
     healthText.innerText= health;   
    } else{
@@ -253,13 +259,15 @@ function attackmons(){
     text.innerText= "The " + monsters[fighting].name + " attacks you. ";
     text.innerText += " You attack it with your " +weapons[currentWeapon].name+ ".";
     health -=monsters[fighting].level;
-    monsterHealth -=weapons[currentWeapon].power +Math.floor(Math.random() * xp) +1;
+    monsterHealth -=weapons[currentWeapon].power + Math.floor(Math.random() * xp) +1;
+
     monsterHealthText.innerText= monsterHealth;
     if (health <= 0) {
         lose();
 
     } else if (monsterHealth <=0 ) {
-        defeatMonster();
+        
+        fighting === 2 ? winGame():defeatMonster();
         
     }
 }
@@ -275,9 +283,8 @@ function dodgemons(){
 function defeatMonster(){
     gold += Math.floor(monsters[fighting].level * 6.7);
     xp += monsters[fighting].level;
-    goldText.innerText=gold;
     xpText.innerText=xp;
-
+    goldText.innerText=gold;
     update(locations[4]);
 
 
@@ -291,6 +298,19 @@ function lose(){
 
 
 function restart(){
+    xp=0;
+    health=100;
+    gold=50;
+    currentWeapon=0;
+    inventory= ["stick"];
+    goldText.innerText=gold;
+    healthText.innerText=health;
+    xpText.innerText=xp;
+    goTown();
 
 
+}
+
+function  winGame() {
+    update(locations[6]);    
 }
