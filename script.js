@@ -67,10 +67,37 @@ const locations=[
         text: "You enter the cave. You see some monsters"
     
 
-    }
-    
+    },
 
-]
+
+    {
+        name: "fight",
+        "button text": ["Attack", "Dodge", "Run"],
+        "button function":[attackmons, dodgemons, goTown],
+        text: "You are fighting a monster"
+        
+    }
+
+];
+
+const monsters=[
+    {
+        name:"slime",
+        level: 2,
+        health: 15,
+
+    },
+    {
+        name:"franged beast",
+        level: 8,
+        health: 60,
+    },
+    {
+        name:"dragon",
+        level: 20,
+        health: 300,
+    }
+];
 
 button1.onclick= goStore;
 button2.onclick= goCave;
@@ -131,15 +158,14 @@ function buyHealth() {
 
 function buyWeapon(){
 
-    if (currentWeapon < weapons.length-1) {
+    if (currentWeapon < weapons.length-1 ) {
         if (gold>=30) {
 
             gold-=30;
-            gold-= 30;
             currentWeapon++; 
             goldText.innerText = gold;
             let newWeapon= weapons[currentWeapon].name;
-            text.innerText = "You have a "+ newWappon + ".";
+            text.innerText = "You have a "+ newWeapon + ".";
             inventory.push(newWeapon);
     
             text.innerText+=" In you inventory, you have: "+ inventory;
@@ -158,21 +184,77 @@ function buyWeapon(){
 
 function sellWeapon(){
 
+    if (inventory.length >1) {
+
+        gold+=15;
+        goldText.innerText=gold;
+        let currentWeapon=inventory.shift();
+        text.innerText="You sold a "+ currentWeapon + ".";
+        text.innerText+=" In you inventory, you have: "+ inventory;
+    }
+    else{
+        text.innerText="You dont have a weapon to sell";
+    }
+
+
 }
 
 
 
 function fightDragon( ) {
 
-    console.log("Going to Store");
+    fighting=0;
+    gofight();
     
 }
 
 function fightSlime() {
 
+    fighting=1;
+    gofight();
+
 }
 
 
 function fightBeast(){
+    fighting=2;
+    gofight();
+
+}
+
+function gofight(){
+
+    update(locations[3]);
+    monsterHealth= monsters[fighting].health;
+    monsterStats.style.display="block";
+    monsterNameText.innerText=monsters[fighting].name;
+    monsterHealthText.innerText=monsterHealth;
+
+
+}
+
+function attackmons(){
+    text.innerText= "The " + monsters[fighting].name + "attacks you. ";
+    text.innerText += " You attack it with your " +weapons[currentWeapon].name+ ".";
+    health -=monsters[fighting].level;
+/* This line of code is reducing the monster's health during a battle. It calculates the damage dealt
+to the monster by subtracting the power of the current weapon from the monster's health.
+Additionally, it adds a random value between 0 and the player's experience points (xp) to the
+damage. The `Math.random()` function generates a random decimal number between 0 (inclusive) and 1
+(exclusive), which is then multiplied by the player's experience points and rounded down using
+`Math.floor()`. Finally, 1 is added to ensure that there is always at least 1 point of damage dealt. */
+    monsterHealth -=weapons[currentWeapon].power +Math.floor(Math.random() * xp) +1;
+
+
+    
+
+
+
+
+
+}
+
+ 
+function dodgemons(){
 
 }
