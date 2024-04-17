@@ -76,7 +76,22 @@ const locations=[
         "button function":[attackmons, dodgemons, goTown],
         text: "You are fighting a monster"
         
+    },
+    {
+        name: "kill monster",
+        "button text": ["Go To Town Square","Go To Town Square", "Go To Town Square"],
+        "button function":[goTown,goTown,goTown],
+        text: "The monster screams Arg! as it dies. You gain experience points and find gold"
+
+    },
+    {
+        name: "lose",
+        "button text": ["REPLAY", "REPLAY", "REPLAY"],
+        "button function":[restart, restart, restart],
+        text: "You Died"
+        
     }
+
 
 ];
 
@@ -107,6 +122,7 @@ button3.onclick= fightDragon;
 
 
 function update(location) {
+    
     button1.innerText = location["button text"][0];
     button2.innerText = location["button text"][1];
     button3.innerText = location["button text"][2];
@@ -234,27 +250,47 @@ function gofight(){
 }
 
 function attackmons(){
-    text.innerText= "The " + monsters[fighting].name + "attacks you. ";
+    text.innerText= "The " + monsters[fighting].name + " attacks you. ";
     text.innerText += " You attack it with your " +weapons[currentWeapon].name+ ".";
     health -=monsters[fighting].level;
-/* This line of code is reducing the monster's health during a battle. It calculates the damage dealt
-to the monster by subtracting the power of the current weapon from the monster's health.
-Additionally, it adds a random value between 0 and the player's experience points (xp) to the
-damage. The `Math.random()` function generates a random decimal number between 0 (inclusive) and 1
-(exclusive), which is then multiplied by the player's experience points and rounded down using
-`Math.floor()`. Finally, 1 is added to ensure that there is always at least 1 point of damage dealt. */
     monsterHealth -=weapons[currentWeapon].power +Math.floor(Math.random() * xp) +1;
+    monsterHealthText.innerText= monsterHealth;
+    if (health <= 0) {
+        lose();
 
-
-    
-
-
-
-
-
+    } else if (monsterHealth <=0 ) {
+        defeatMonster();
+        
+    }
 }
 
  
 function dodgemons(){
+
+    text.innerText = "You dodge the attack from the "+ monsters[fighting].name + "."
+
+}
+
+
+function defeatMonster(){
+    gold += Math.floor(monsters[fighting].level * 6.7);
+    xp += monsters[fighting].level;
+    goldText.innerText=gold;
+    xpText.innerText=xp;
+
+    update(locations[4]);
+
+
+}
+
+function lose(){
+
+    update(locations[5]);
+
+}
+
+
+function restart(){
+    
 
 }
