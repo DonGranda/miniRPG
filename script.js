@@ -81,7 +81,7 @@ const locations=[
     {
         name: "kill monster",
         "button text": ["Go To Town Square","Go To Town Square", "Go To Town Square"],
-        "button function":[goTown,goTown,goTown],
+        "button function":[goTown,goTown,easterEgg],
         text: "The monster screams Arg! as it dies. You gain experience points and find gold"
 
     },
@@ -97,6 +97,12 @@ const locations=[
         "button text": ["REPLAY", "REPLAY", "REPLAY"],
         "button function":[restart, restart, restart],
         text: "You defeated the Dragon! YOU WIN THE GAME!!🥳🎉"
+    },
+    {
+        name: "Eater egg",
+        "button text": ["2", "8","Go to town"],
+        "button function": [pick1, pick8, goTown],
+        text: "You've find a search game. Pick a number above. ten number will be randomly selected between 1 and 0. If the number you choose matches one of the numbers, You win the game.☺️ "
     }
 
 
@@ -155,7 +161,7 @@ function goStore( ) {
 
 function goCave( ) {
 
-    update(locations[2])
+    update(locations[2]);
     
 }
 
@@ -172,8 +178,6 @@ function buyHealth() {
 
    }
    
-    
-    
     
 
 }
@@ -257,8 +261,17 @@ function gofight(){
 
 function attackmons(){
     text.innerText= "The " + monsters[fighting].name + " attacks you. ";
-    text.innerText += " You attack it with your " +weapons[currentWeapon].name+ ".";
-    health -=monsters[fighting].level;
+    text.innerText += " You attack it with your " + weapons[currentWeapon].name+ ".";
+    if (monsterHit()) {
+
+        health -= getMonsterAttackValue(monsters[fighting].level);
+        
+    } else {
+        text.innerText="You miss.😓"
+        
+    }
+
+   
     monsterHealth -=weapons[currentWeapon].power + Math.floor(Math.random() * xp) +1;
 
     monsterHealthText.innerText= monsterHealth;
@@ -270,6 +283,29 @@ function attackmons(){
         fighting === 2 ? winGame():defeatMonster();
         
     }
+
+
+    if (Math.random()<= .1  && inventory.length !== 1){
+
+        text.innerText += " Your " + inventory.pop() +" breaks.... ";
+        currentWeapon--;
+
+
+    }
+}
+function monsterHit(){
+
+    return Math.random() < 0.8;
+
+}
+
+function getMonsterAttackValue(monsterlevel){
+
+    let hit = (monsterlevel * 5)-(Math.random() * xp);
+    console.log(hit);
+
+    return hit;
+
 }
 
  
@@ -314,3 +350,59 @@ function restart(){
 function  winGame() {
     update(locations[6]);    
 }
+
+function easterEgg(){
+    
+    update(locations[7]);
+}
+
+
+function pick1(){
+
+    pick(2);
+
+}
+
+function pick8(){
+    pick(8);
+
+}
+
+
+function pick(guess){
+
+    let numbers =[];
+
+    while(numbers.length < 10){
+        numbers.push(Math.floor(Math.random()*11));
+    }
+
+    text.innerText ="You picked "+ guess + ". Here are the random numbers.\n ";
+
+    for (let i = 0; i < 10 ; i++) {
+        text.innerText += numbers[i] + "\n";
+    
+    }
+
+    if (numbers.indexOf(guess)!== -1){
+        gold+= 20;
+        goldText.innerText=gold;
+        text.innerText += " Congratuations, you just won 20 gold 🐐";
+
+    }
+    else{
+        health -=10
+        goldText.innerText=gold;
+        text.innerText += " Wrong! you just lost 10 health ☹️"; 
+        if(health <= 0){
+            lose();
+
+        }
+
+    }
+
+}
+
+
+
+
